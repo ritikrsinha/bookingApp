@@ -6,16 +6,16 @@ body {
 .form-detail{
    background-color: aliceblue;
    width: 500px;
-   height: 350px;
+   height: 340px;
    margin: auto;
    border-radius: 5px;
-   border: 2px solid orange;
+   border: 2px brown;
 }
 
 
 .title{
     text-align: center;
-    color: orange;
+    color: black;
 }
 
 .booking{
