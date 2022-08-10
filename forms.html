@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>Book a Call</title>
+</head>
+<body>
+  <form onsubmit="saveToLocalStorage(event)">
+  <h1 class="title"> Book a call!</h1>
+  <p class="booking"> Book a call slot and our representative will call you back.</p>
+  <hr>
+    <label> Name:</label> <br>
+    <input type ="text" name="username" required /> <br>
+    <label> Email: </label> <br>
+    <input type ="email" name="email" required /> <br>
+    <label> Phone: </label> <br>
+    <input type="number" name="phonenumber" required /> <br>
+    <label>Time for call:</label><br>
+    <input id='calldate' type="date" name="calldate" value="" style="width:237px;">
+    <input id="calltime" type="time" name="calltime" value="" style="width:237px;";><br><br>
+    <button class="btn">Get a call</button> 
+    </form>
+    <script>
+     function saveToLocalStorage(event){
+      event.preventDefault();
+      const name = event.target.username.value;
+      const email = event.target.email.value;
+      const phonenumber = event.target.phonenumber.value;
+      const calldate = event.target.calldate.value;
+      const calltime = event.target.calltime.value;
+      localStorage.setItem('name', name);
+      localStorage.setItem('email', email);
+      localStorage.setItem('phonenumber', phonenumber);
+      localStorage.setItem('calldate', calldate);
+      localStorage.setItem('calltime', calltime);
+     }
+    </script>
+</body>
+</html>
