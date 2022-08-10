@@ -1,5 +1,5 @@
 body {
-    background-color: darkgrey;
+    background-color: rgb(165, 172, 178);
 }
 
 
@@ -9,13 +9,15 @@ body {
    height: 340px;
    margin: auto;
    border-radius: 5px;
-   border: 2px brown;
+   border: 4px rgb(57, 45, 45);
 }
 
 
 .title{
     text-align: center;
-    color: black;
+    color: rgb(57, 44, 44);
+    font-size: 30px;
+    padding: 3px;
 }
 
 .booking{
@@ -23,7 +25,7 @@ body {
 }
 
 hr{
-    margin: 2px;
+    margin: 5px;
 }
 label{
     padding: 5px;
@@ -37,7 +39,7 @@ label{
 } 
 .btn{
     text-align: center;
-    background-color: orange;
+    background-color: rgb(85, 79, 85);
     height: 30px;
     width: 488px;
     color: white;
