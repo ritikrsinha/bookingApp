@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="style.css">
-    <title>Book a Call</title>
+    <title>Booking Appointment App</title>
 </head>
 <body>
-  <form onsubmit="saveToLocalStorage(event)">
+  <form class="form-detail" onsubmit="saveToLocalStorage(event)">
   <h1 class="title"> Book a call!</h1>
   <p class="booking"> Book a call slot and our representative will call you back.</p>
   <hr>
@@ -28,11 +28,14 @@
       const phonenumber = event.target.phonenumber.value;
       const calldate = event.target.calldate.value;
       const calltime = event.target.calltime.value;
-      localStorage.setItem('name', name);
-      localStorage.setItem('email', email);
-      localStorage.setItem('phonenumber', phonenumber);
-      localStorage.setItem('calldate', calldate);
-      localStorage.setItem('calltime', calltime);
+      const obj = {
+               name,
+               email,
+               phonenumber,
+               calldate,
+               calltime
+           }
+      localStorage.setItem('userDetails', JSON.stringify(obj));
      }
     </script>
 </body>
