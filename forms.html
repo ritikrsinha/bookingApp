@@ -20,6 +20,7 @@
     <input id="calltime" type="time" name="calltime" value="" style="width:237px;";><br><br>
     <button class="btn">Get a call</button> 
     </form>
+    <ul id="listOfUsers"></ul>
     <script>
      function saveToLocalStorage(event){
       event.preventDefault();
@@ -35,8 +36,29 @@
                calldate,
                calltime
            }
-      localStorage.setItem('userDetails', JSON.stringify(obj));
+      localStorage.setItem(obj.email, JSON.stringify(obj));
+      showNewUserOnScreen(obj)
      }
+
+     function showNewUserOnScreen(user){
+      const parentNode = document.getElementById('listOfUsers');
+      const childHTML = `<li id=${user._id}> ${user.name} - ${user.email} - ${user.phonenumber} - ${user.calldate} - ${user.calltime}`
+
+      parentNode.innerHTML = parentNode.innerHTML + childHTML;
+     }
+
+
+        const localStorageObj = localStorage;
+        const localstoragekeys  = Object.keys(localStorageObj)
+
+         for(var i =0; i< localstoragekeys.length; i++){
+           const key = localstoragekeys[i]
+           const userDetailsString = localStorageObj[key];
+           const userDetailsObj = JSON.parse(userDetailsString);
+           showNewUserOnScreen(userDetailsObj)
+           }
+    //   })
     </script>
+
 </body>
 </html>
