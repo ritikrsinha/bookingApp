@@ -10,11 +10,11 @@
   <p class="booking"> Book a call slot and our representative will call you back.</p>
   <hr>
     <label> Name:</label> <br>
-    <input type ="text" name="username" required /> <br>
+    <input id="username" type ="text" name="username" required /> <br>
     <label> Email: </label> <br>
-    <input type ="email" name="email" required /> <br>
+    <input id="email" type ="email" name="email" required /> <br>
     <label> Phone: </label> <br>
-    <input type="number" name="phonenumber" required /> <br>
+    <input id="phonenumber" type="number" name="phonenumber" required /> <br>
     <label>Time for call:</label><br>
     <input id='calldate' type="date" name="calldate" value="" style="width:237px;">
     <input id="calltime" type="time" name="calltime" value="" style="width:237px;";><br><br>
@@ -41,12 +41,46 @@
      }
 
      function showNewUserOnScreen(user){
-      const parentNode = document.getElementById('listOfUsers');
-      const childHTML = `<li id=${user._id}> ${user.name} - ${user.email} - ${user.phonenumber} - ${user.calldate} - ${user.calltime}`
+      document.getElementById('email').value = '';
+      document.getElementById('username').value = '';
+      document.getElementById('phonenumber').value = '';
+      document.getElementById('calldate').value = '';
+      document.getElementById('calltime').value = '';
+      if(localStorage.getItem(user.email) !== null){
+            removeUserFromScreen(user.email)
+           }
 
+      const parentNode = document.getElementById('listOfUsers');
+      const childHTML = `<li id=${user.email}> ${user.name} - ${user.email} - ${user.phonenumber} - ${user.calldate} - ${user.calltime}
+      <button onclick=deleteUser('${user.email}')> Delete User </button>
+      <button class='editbutton' onclick=editUserDetails('${user.email}','${user.name}','${user.phonenumber}','${user.calldate}','${user.calltime}')>Edit User </button>
+                              </li>`
       parentNode.innerHTML = parentNode.innerHTML + childHTML;
      }
 
+    //  delete user
+     function deleteUser(email){
+           console.log(email);
+           localStorage.removeItem(email);
+           removeUserFromScreen(email);
+     }
+    //   edit user
+     function editUserDetails(email, name, phonenumber, calldate, calltime){
+      document.getElementById('email').value = email;
+      document.getElementById('username').value = name;
+      document.getElementById('phonenumber').value = phonenumber;
+      document.getElementById('calldate').value = calldate
+      document.getElementById('calltime').value = calltime;
+      deleteUser(email);
+
+     }
+
+     function removeUserFromScreen(email){
+      const parentNode = document.getElementById('listOfUsers');
+      const childNodeToBeDeleted = document.getElementById(email);
+
+      parentNode.removeChild(childNodeToBeDeleted);
+     }
 
         const localStorageObj = localStorage;
         const localstoragekeys  = Object.keys(localStorageObj)
@@ -57,7 +91,14 @@
            const userDetailsObj = JSON.parse(userDetailsString);
            showNewUserOnScreen(userDetailsObj)
            }
-    //   })
+      
+       function removeUserFromScreen(emailId){
+           const parentNode = document.getElementById('listOfUsers');
+           const childNodeToBeDeleted = document.getElementById(emailId);
+          if(childNodeToBeDeleted) {
+            parentNode.removeChild(childNodeToBeDeleted)
+          }
+       }
     </script>
 
 </body>
