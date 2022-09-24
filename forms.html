@@ -76,10 +76,10 @@
         function showNewUserOnScreen(user){
         
         document.getElementById('email').value = '';
-           document.getElementById('username').value = '';
-           document.getElementById('phonenumber').value ='';
-           document.getElementById('calldate').value ='';
-           document.getElementById('calltime').value ='';
+        document.getElementById('username').value = '';
+        document.getElementById('phonenumber').value ='';
+        document.getElementById('calldate').value ='';
+        document.getElementById('calltime').value ='';
 
            if(localStorage.getItem(user.email) !== null){
             removeUserFromScreen(user.email)
@@ -87,10 +87,13 @@
            const parentNode = document.getElementById('listOfUsers');
            const childHTML = `<li id=${user._id}> ${user.name} - ${user.email} - ${user.phonenumber} - ${user.calldate} - ${user.calltime}
                                    <button class='deletbutton' onclick=deleteUser('${user._id}')> Delete User </button>
-                                   <button class='editbutton' onclick=editUserDetails('${user.email}','${user.name}','${user.phonenumber}','${user.calldate}','${user.calltime}','${user._id}')>Edit User </button>
+                                   <button class='editbutton' onclick=editUserDetails('${user._id}','${user.name}','${user.phonenumber}','${user.calldate}','${user.calltime}','${user.email}')>Edit User </button>
                                 </li>`
            parentNode.innerHTML = parentNode.innerHTML + childHTML;
-       }
+  
+                              }
+
+
        // Edit user
        function editUserDetails(emailId, name, phonenumber,calldate,calltime,){
            document.getElementById('email').value = emailId;
@@ -100,19 +103,27 @@
            document.getElementById('calltime').value = calltime;
            deleteUser(emailId);
        }
+
+         // deleteUser 
+         function deleteUser(userId){
+          axios.delete(`https://crudcrud.com/api/ee9aeeec9e2241b7b4a6d63358487f32/appointmentData/${userId}`)
+          .then((response) => {
+            removeUserFromScreen(userId)
+          }).catch((err) => {
+            console.log(err)
+          })
+        //  console.log(emailId)
+        // localStorage.removeItem(emailId);
+        // removeUserFromScreen(emailId);
+
+}
        
        
-       // deleteUser 
-       function deleteUser(emailId){
-          //  console.log(emailId)
-           localStorage.removeItem(emailId);
-           removeUserFromScreen(emailId);
+      
 
-       }
-
-       function removeUserFromScreen(emailId){
+       function removeUserFromScreen(userId){
            const parentNode = document.getElementById('listOfUsers');
-           const childNodeToBeDeleted = document.getElementById(emailId);
+           const childNodeToBeDeleted = document.getElementById(userId);
 
            parentNode.removeChild(childNodeToBeDeleted)
        }
