@@ -16,7 +16,7 @@
     <input id="phonenumber" type="number" name="phonenumber" required /> <br>
     <label>Time for call:</label><br>
     <input id='calldate' type="date" name="calldate" value="" style="width:237px;">
-    <input id="calltime" type="time" name="calltime" value="" style="width:237px;";><br><br>
+    <input id="calltime" type="time" name="calltime" value="" style="width:237px;"><br><br>
     <button class="btn">Get a call</button> 
     </form>
     <ul id="listOfUsers"></ul>
@@ -37,7 +37,7 @@
                calltime
            }
 
-      axios.post("https://crudcrud.com/api/6991d91070f14f88ab5e53e00cb1698b/appointmentData", obj)
+      axios.post("https://crudcrud.com/api/ee9aeeec9e2241b7b4a6d63358487f32/appointmentData", obj)
       .then((response) => {
         showNewUserOnScreen(response.data);
         console.log(response);
@@ -50,42 +50,53 @@
       // showNewUserOnScreen(obj)
      }
 
-     window.addEventListener("DOMContentLoaded", () => {
-           const localStorageObj = localStorage;
-           const localstoragekeys  = Object.keys(localStorageObj)
+    window.addEventListener("DOMContentLoaded", () => {
+    axios.get("https://crudcrud.com/api/ee9aeeec9e2241b7b4a6d63358487f32/appointmentData")
+    .then((response) => {
+      for(var i =0; i<response.data.length; i++){
+        showNewUserOnScreen(response.data[i])
+      }
+      console.log(response);
+    }).catch((err) => {
+      console.log(err);
+    })
 
-           for(var i =0; i< localstoragekeys.length; i++){
-               const key = localstoragekeys[i]
-               const userDetailsString = localStorageObj[key];
-               const userDetailsObj = JSON.parse(userDetailsString);
-               showNewUserOnScreen(userDetailsObj)
-           }
+          //  const localStorageObj = localStorage;
+          //  const localstoragekeys  = Object.keys(localStorageObj)
+
+          //  for(var i =0; i< localstoragekeys.length; i++){
+          //      const key = localstoragekeys[i]
+          //      const userDetailsString = localStorageObj[key];
+          //      const userDetailsObj = JSON.parse(userDetailsString);
+          //      showNewUserOnScreen(userDetailsObj)
+          //  }
         })
 
 
-       function showNewUserOnScreen(user){
-           document.getElementById('email').value = '';
+        function showNewUserOnScreen(user){
+        
+        document.getElementById('email').value = '';
            document.getElementById('username').value = '';
            document.getElementById('phonenumber').value ='';
            document.getElementById('calldate').value ='';
            document.getElementById('calltime').value ='';
 
-
+           if(localStorage.getItem(user.email) !== null){
+            removeUserFromScreen(user.email)
+           }
            const parentNode = document.getElementById('listOfUsers');
-           const childHTML = `<li id=${user.email}> ${user.name} - ${user.email}
-                                   <button class='deletbutton' onclick=deleteUser('${user.email}')> Delete User </button>
-                                   <button class='editbutton' onclick=editUserDetails('${user.email}','${user.name}','${user.phonenumber}','${user.calldate}','${user.calltime}')>Edit User </button>
+           const childHTML = `<li id=${user._id}> ${user.name} - ${user.email} - ${user.phonenumber} - ${user.calldate} - ${user.calltime}
+                                   <button class='deletbutton' onclick=deleteUser('${user._id}')> Delete User </button>
+                                   <button class='editbutton' onclick=editUserDetails('${user.email}','${user.name}','${user.phonenumber}','${user.calldate}','${user.calltime}','${user._id}')>Edit User </button>
                                 </li>`
-
            parentNode.innerHTML = parentNode.innerHTML + childHTML;
        }
-
        // Edit user
-       function editUserDetails(emailId, name, phonenumber,calldate,calltime){
+       function editUserDetails(emailId, name, phonenumber,calldate,calltime,){
            document.getElementById('email').value = emailId;
            document.getElementById('username').value = name;
            document.getElementById('phonenumber').value = phonenumber;
-           document.getElementById('calldate').value = calldate
+           document.getElementById('calldate').value = calldate;
            document.getElementById('calltime').value = calltime;
            deleteUser(emailId);
        }
@@ -93,7 +104,7 @@
        
        // deleteUser 
        function deleteUser(emailId){
-           console.log(emailId)
+          //  console.log(emailId)
            localStorage.removeItem(emailId);
            removeUserFromScreen(emailId);
 
