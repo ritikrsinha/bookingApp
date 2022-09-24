@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <link rel="stylesheet" href="style.css">
     <title>Booking Appointment App</title>
@@ -12,7 +11,7 @@
     <label> Name:</label> <br>
     <input id="username" type ="text" name="username" required /> <br>
     <label> Email: </label> <br>
-    <input id="email" type ="email" name="email" required /> <br>
+    <input id="email" type ="email" name="emailId" required /> <br>
     <label> Phone: </label> <br>
     <input id="phonenumber" type="number" name="phonenumber" required /> <br>
     <label>Time for call:</label><br>
@@ -21,11 +20,12 @@
     <button class="btn">Get a call</button> 
     </form>
     <ul id="listOfUsers"></ul>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
     <script>
      function saveToLocalStorage(event){
       event.preventDefault();
       const name = event.target.username.value;
-      const email = event.target.email.value;
+      const email = event.target.emailId.value;
       const phonenumber = event.target.phonenumber.value;
       const calldate = event.target.calldate.value;
       const calltime = event.target.calltime.value;
@@ -36,68 +36,74 @@
                calldate,
                calltime
            }
-      localStorage.setItem(obj.email, JSON.stringify(obj));
-      showNewUserOnScreen(obj)
+
+      axios.post("https://crudcrud.com/api/6991d91070f14f88ab5e53e00cb1698b/appointmentData", obj)
+      .then((response) => {
+        showNewUserOnScreen(response.data);
+        console.log(response);
+      }).catch(err => {
+        document.body.innerHTML = document.body.innerHTML + "<h4>Somthing went wrong</h4>";
+        console.log(err);
+      })
+
+      // localStorage.setItem(obj.email, JSON.stringify(obj));
+      // showNewUserOnScreen(obj)
      }
 
-     function showNewUserOnScreen(user){
-      document.getElementById('email').value = '';
-      document.getElementById('username').value = '';
-      document.getElementById('phonenumber').value = '';
-      document.getElementById('calldate').value = '';
-      document.getElementById('calltime').value = '';
-      if(localStorage.getItem(user.email) !== null){
-            removeUserFromScreen(user.email)
+     window.addEventListener("DOMContentLoaded", () => {
+           const localStorageObj = localStorage;
+           const localstoragekeys  = Object.keys(localStorageObj)
+
+           for(var i =0; i< localstoragekeys.length; i++){
+               const key = localstoragekeys[i]
+               const userDetailsString = localStorageObj[key];
+               const userDetailsObj = JSON.parse(userDetailsString);
+               showNewUserOnScreen(userDetailsObj)
            }
+        })
 
-      const parentNode = document.getElementById('listOfUsers');
-      const childHTML = `<li id=${user.email}> ${user.name} - ${user.email} - ${user.phonenumber} - ${user.calldate} - ${user.calltime}
-      <button onclick=deleteUser('${user.email}')> Delete User </button>
-      <button class='editbutton' onclick=editUserDetails('${user.email}','${user.name}','${user.phonenumber}','${user.calldate}','${user.calltime}')>Edit User </button>
-                              </li>`
-      parentNode.innerHTML = parentNode.innerHTML + childHTML;
-     }
 
-    //  delete user
-     function deleteUser(email){
-           console.log(email);
-           localStorage.removeItem(email);
-           removeUserFromScreen(email);
-     }
-    //   edit user
-     function editUserDetails(email, name, phonenumber, calldate, calltime){
-      document.getElementById('email').value = email;
-      document.getElementById('username').value = name;
-      document.getElementById('phonenumber').value = phonenumber;
-      document.getElementById('calldate').value = calldate
-      document.getElementById('calltime').value = calltime;
-      deleteUser(email);
+       function showNewUserOnScreen(user){
+           document.getElementById('email').value = '';
+           document.getElementById('username').value = '';
+           document.getElementById('phonenumber').value ='';
+           document.getElementById('calldate').value ='';
+           document.getElementById('calltime').value ='';
 
-     }
 
-     function removeUserFromScreen(email){
-      const parentNode = document.getElementById('listOfUsers');
-      const childNodeToBeDeleted = document.getElementById(email);
+           const parentNode = document.getElementById('listOfUsers');
+           const childHTML = `<li id=${user.email}> ${user.name} - ${user.email}
+                                   <button class='deletbutton' onclick=deleteUser('${user.email}')> Delete User </button>
+                                   <button class='editbutton' onclick=editUserDetails('${user.email}','${user.name}','${user.phonenumber}','${user.calldate}','${user.calltime}')>Edit User </button>
+                                </li>`
 
-      parentNode.removeChild(childNodeToBeDeleted);
-     }
+           parentNode.innerHTML = parentNode.innerHTML + childHTML;
+       }
 
-        const localStorageObj = localStorage;
-        const localstoragekeys  = Object.keys(localStorageObj)
+       // Edit user
+       function editUserDetails(emailId, name, phonenumber,calldate,calltime){
+           document.getElementById('email').value = emailId;
+           document.getElementById('username').value = name;
+           document.getElementById('phonenumber').value = phonenumber;
+           document.getElementById('calldate').value = calldate
+           document.getElementById('calltime').value = calltime;
+           deleteUser(emailId);
+       }
+       
+       
+       // deleteUser 
+       function deleteUser(emailId){
+           console.log(emailId)
+           localStorage.removeItem(emailId);
+           removeUserFromScreen(emailId);
 
-         for(var i =0; i< localstoragekeys.length; i++){
-           const key = localstoragekeys[i]
-           const userDetailsString = localStorageObj[key];
-           const userDetailsObj = JSON.parse(userDetailsString);
-           showNewUserOnScreen(userDetailsObj)
-           }
-      
+       }
+
        function removeUserFromScreen(emailId){
            const parentNode = document.getElementById('listOfUsers');
            const childNodeToBeDeleted = document.getElementById(emailId);
-          if(childNodeToBeDeleted) {
-            parentNode.removeChild(childNodeToBeDeleted)
-          }
+
+           parentNode.removeChild(childNodeToBeDeleted)
        }
     </script>
 
