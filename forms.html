@@ -37,7 +37,7 @@
                calltime
            }
 
-      axios.post("https://crudcrud.com/api/ee9aeeec9e2241b7b4a6d63358487f32/appointmentData", obj)
+      axios.post("https://crudcrud.com/api/c9e56e3047db4aefbb793dd98ac40d34/appointmentData", obj)
       .then((response) => {
         showNewUserOnScreen(response.data);
         console.log(response);
@@ -51,7 +51,7 @@
      }
 
     window.addEventListener("DOMContentLoaded", () => {
-    axios.get("https://crudcrud.com/api/ee9aeeec9e2241b7b4a6d63358487f32/appointmentData")
+    axios.get("https://crudcrud.com/api/c9e56e3047db4aefbb793dd98ac40d34/appointmentData")
     .then((response) => {
       for(var i =0; i<response.data.length; i++){
         showNewUserOnScreen(response.data[i])
@@ -87,7 +87,7 @@
            const parentNode = document.getElementById('listOfUsers');
            const childHTML = `<li id=${user._id}> ${user.name} - ${user.email} - ${user.phonenumber} - ${user.calldate} - ${user.calltime}
                                    <button class='deletbutton' onclick=deleteUser('${user._id}')> Delete User </button>
-                                   <button class='editbutton' onclick=editUserDetails('${user.email}','${user.name}','${user.phonenumber}','${user.calldate}','${user.calltime}','${user.email}','${user._id}')>Edit User </button>
+                                   <button class='editbutton' onclick=editUserDetails('${user.name}','${user.email}','${user.phonenumber}','${user.calldate}','${user.calltime}','${user.email}','${user._id}')>Edit User </button>
                                 </li>`
            parentNode.innerHTML = parentNode.innerHTML + childHTML;
   
@@ -95,18 +95,18 @@
 
 
        // Edit user
-       function editUserDetails(emailId, name, phonenumber,calldate,calltime,userId){
-           document.getElementById('email').value = emailId;
-           document.getElementById('username').value = name;
-           document.getElementById('phonenumber').value = phonenumber;
-           document.getElementById('calldate').value = calldate;
-           document.getElementById('calltime').value = calltime;
+       function editUserDetails(name, emailId, phonenumber,calldate,calltime,userId){
+        document.getElementById('username').value = name;
+        document.getElementById('email').value = emailId;
+        document.getElementById('phonenumber').value = phonenumber;
+        document.getElementById('calldate').value = calldate;
+        document.getElementById('calltime').value = calltime;
            deleteUser(userId);
        }
 
          // deleteUser 
          function deleteUser(userId){
-          axios.delete(`https://crudcrud.com/api/ee9aeeec9e2241b7b4a6d63358487f32/appointmentData/${userId}`)
+          axios.delete(`https://crudcrud.com/api/c9e56e3047db4aefbb793dd98ac40d34/appointmentData/${userId}`)
           .then((response) => {
             removeUserFromScreen(userId)
           }).catch((err) => {
